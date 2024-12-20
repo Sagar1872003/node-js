@@ -1,13 +1,5 @@
-// const express = require("express");
-// const app = express();
-// const port = 8000;
-
-// app.set('view engin', 'ejs');
-// const path = require("path");
-
-// app.use(express.static(path.join(__dirname, 'public')));
-
-const express = require('express');
+ 
+ const express = require('express');
 
 const port = 8000;
 
