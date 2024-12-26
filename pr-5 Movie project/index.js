@@ -1,181 +1,129 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+
 const app = express();
 const port = 9000;
 
-const databese = require('./config/db')
-databese();
+// MongoDB connection
+mongoose.connect('mongodb://localhost:27017/movieManager', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+    console.log('Connected to MongoDB');
+});
 
-const MovieModel = require(`./models/movieModel`);
-const fs = require('fs');
+// Define Movie Schema
+const movieSchema = new mongoose.Schema({
+    name: String,
+    price: Number,
+    seats: Number,
+    description: String,
+    image: String,
+});
 
+const MovieModel = mongoose.model('Movie', movieSchema);
+
+// Middleware
 app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use(express.urlencoded())
-
-const path = require('path');
-
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-
-const multer = require('multer');
-
-const { unlinkSync } = require('fs');
-
-
-const st = multer.diskStorage({
-    destination: (req, res, cb) => {
-        return cb(null, 'uploads');
+// Multer setup for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads');
     },
     filename: (req, file, cb) => {
-        const uniq = Math.floor(Math.random() * 1000000000);
-        return cb(null, `${file.fieldname}-${uniq}`)
-    }
-})
+        const uniqueName = `${Date.now()}-${file.originalname}`;
+        cb(null, uniqueName);
+    },
+});
+const upload = multer({ storage }).single('image');
 
-const fileUpload = multer({ storage: st }).single('image');
-
-
-
-app.get('/view', (req, res) => {
+// Routes
+app.get('/', (req, res) => {
     MovieModel.find({})
-        .then((detail) => {
-            return res.render('viewMovie', {
-                detail: detail
-            });
+        .then((movies) => {
+            res.render('dashboard', { movies });
         })
         .catch((err) => {
             console.error(err);
-            return false;
         });
-});
-
-
-
-app.get('/', (req, res) => {
-    return res.render('Deshbord') 
 });
 
 app.get('/add', (req, res) => {
-    return res.render('addMovie'); 
+    res.render('addMovie');
 });
 
-
-
-
-app.post('/insertdetail', fileUpload, (req, res) => {
+app.post('/insertDetail', upload, (req, res) => {
     const { name, price, seats, description } = req.body;
-    MovieModel.create({
-        name,
-        price,
-        seats,
-        description,
-        image: req.file.path
-    })
-        .then((data) => {
-            console.log(data);
-            return res.redirect('/view')
-        })
-        .catch((err) => {
-            console.log(err);
-            return false;
-        })
-})
+    const imagePath = req.file ? req.file.path : '';
+    const newMovie = new MovieModel({ name, price, seats, description, image: imagePath });
 
-
-app.get('/delete', (req, res) => {
-    const delid = req.query.deletId;
-
-
-    MovieModel.findById(delid)
-        .then((single) => {
-            if (single && single.image) {
-
-                fs.unlinkSync(single.image);
-            }
-            return MovieModel.findByIdAndDelete(delid);
-        })
+    newMovie
+        .save()
         .then(() => {
-            return res.redirect('/view');
+            res.redirect('/');
         })
         .catch((err) => {
             console.error(err);
-            return false;
         });
 });
 
+// app.get('/edit', (req, res) => {
+//     const editId = req.query.editId;
 
-app.get('/edit', (req, res) => {
-    const eid = req.query.editId;
-    MovieModel.findById(eid)
-        .then((single) => {
+//     MovieModel.findById(editId)
+//         .then((movie) => {
+//             res.render('editMovie', { movie });
+//         })
+//         .catch((err) => {
+//             console.error(err);
+//         });
+// });
 
-            return res.render('EditMovie', {
-                single
-            })
-        }).catch((err) => {
-            console.error(err);
-            return false;
-        })
-})
-
-
-
-app.post('/updateDetail', fileUpload, (req, res) => {
+app.post('/updateDetail', upload, (req, res) => {
     const { editid, name, price, seats, description } = req.body;
+    const updatedData = { name, price, seats, description };
+
     if (req.file) {
-        MovieModel.findById(editid)
-            .then((single) => {
-
-                fs.unlinkSync(single.image);
-            })
-            .catch((err) => {
-                console.log(err);
-                return false;
-            });
-        MovieModel.findByIdAndUpdate(editid, {
-            name,
-            price,
-            seats,
-            description,
-            image: req.file.path
-        })
-            .then((data) => {
-                return res.redirect('/view');
-            })
-            .catch((err) => {
-                console.log(err);
-                return false;
-            });
-    } else {
-        MovieModel.findById(editid)
-            .then((single) => {
-
-                return MovieModel.findByIdAndUpdate(editid, {
-                    name,
-                    price,
-                    seats,
-                    description,
-                    image: single.image
-                });
-            })
-            .then(() => {
-                return res.redirect('/view');
-            })
-            .catch((err) => {
-                console.log(err);
-                return false;
-            });
+        updatedData.image = req.file.path;
     }
+
+    MovieModel.findByIdAndUpdate(editid, updatedData)
+        .then(() => {
+            res.redirect('/');
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 });
 
+app.get('/delete', (req, res) => {
+    const deleteId = req.query.deleteId;
 
+    MovieModel.findById(deleteId)
+        .then((movie) => {
+            if (movie.image) {
+                fs.unlinkSync(movie.image);
+            }
+            return MovieModel.findByIdAndDelete(deleteId);
+        })
+        .then(() => {
+            res.redirect('/');
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+});
 
-app.listen(port, (err) => {
-
-    if (err) {
-        console.log(err);
-        return false;
-    }
-    console.log(`server is start on port :- ${port}`);
-
-})
+// Start server
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
