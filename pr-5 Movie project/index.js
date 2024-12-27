@@ -76,17 +76,17 @@ app.post('/insertDetail', upload, (req, res) => {
         });
 });
 
-// app.get('/edit', (req, res) => {
-//     const editId = req.query.editId;
+app.get('/edit', (req, res) => {
+    const editId = req.query.editId;
 
-//     MovieModel.findById(editId)
-//         .then((movie) => {
-//             res.render('editMovie', { movie });
-//         })
-//         .catch((err) => {
-//             console.error(err);
-//         });
-// });
+    MovieModel.findById(editId)
+        .then((movie) => {
+            res.render('editMovie', { movie });
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+});
 
 app.post('/updateDetail', upload, (req, res) => {
     const { editid, name, price, seats, description } = req.body;

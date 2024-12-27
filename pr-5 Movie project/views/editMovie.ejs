@@ -12,28 +12,28 @@
     <div class="container mt-5">
         <h1 class="text-center">Edit Movie</h1>
         <form action="/updateDetail" method="POST" enctype="multipart/form-data" class="mt-4">
-            <input type="hidden" name="editid" value="<%= single._id %>">
+            <input type="hidden" name="editid" value="<%= movie._id %>">
             <div class="mb-3">
                 <label for="name" class="form-label">Movie Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="<%= single.name %>" required>
+                <input type="text" class="form-control" id="name" name="name" value="<%= movie.name %>" required>
             </div>
             <div class="mb-3">
                 <label for="price" class="form-label">Movie Price</label>
-                <input type="number" class="form-control" id="price" name="price" value="<%= single.price %>" required>
+                <input type="number" class="form-control" id="price" name="price" value="<%= movie.price %>" required>
             </div>
             <div class="mb-3">
                 <label for="seats" class="form-label">Seats Available</label>
-                <input type="number" class="form-control" id="seats" name="seats" value="<%= single.seats %>" required>
+                <input type="number" class="form-control" id="seats" name="seats" value="<%= movie.seats %>" required>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="3" required><%= single.description %></textarea>
+                <textarea class="form-control" id="description" name="description" rows="3" required><%= movie.description %></textarea>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Movie Image</label>
                 <input type="file" class="form-control" id="image" name="image" accept="image/*">
                 <p class="text-muted mt-2">Current Image:</p>
-                <img src="/<%= single.image %>" alt="<%= single.name %>" style="width: 150px; height: auto;">
+                <img src="/<%= movie.image %>" alt="<%= movie.name %>" style="width: 150px; height: auto;">
             </div>
             <button type="submit" class="btn btn-primary w-100">Update Movie</button>
         </form>
