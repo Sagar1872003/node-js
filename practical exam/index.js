@@ -1,51 +1,37 @@
-const express = require('express');
-const port = 9999;
+const express = require('express')
+const connectDb = require('./config/db')
 const app = express();
-const path = require('path');
-
-const database = require('./config/db');
-database();
-
-
-const cookieParser = require('cookie-parser');
-app.use(cookieParser());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
+const port = 9000;
+connectDb();
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-
-//authentication start passportjs
-
-const passport = require('passport');
-const passportLocal = require('./config/passportLocal')
-const session = require('express-session');
+const path = require('path')
+const passport = require('passport')
+const passportLocal = require('./config/passportlocal');
+const session = require('express-session')
 app.use(session({
     secret: 'blog',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(passport.setUser);
-
-//authentication ensd passportjs
-
-
-
-
-
-app.use('/', require('./routes/indexRoute'));
+app.use(passport.session())
+app.use(passport.initialize())
+app.use(passport.setUser)
+const cookieParser = require('cookie-parser')
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, "uploads")))
+app.use('/', require('./routes/indexRoutes'))
 
 app.listen(port, (err) => {
     if (err) {
-        console.error('Error starting server:', err);
-    } else {
-        console.log(`Server is running on port: ${port}`);
+        console.log(err);
+        return false
     }
-});
+    console.log(`Server is running on port ${port}`);
+
+})

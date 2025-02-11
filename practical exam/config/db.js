@@ -1,12 +1,15 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
+const link = "mongodb+srv://prathamm3786:pratham%402211@prathamm2211.upqlo.mongodb.net/practical-exam";
 
-const databese = async () => {
-    try {
-        let db = mongoose.connect('mongodb://127.0.0.1:27017/Passport-cookie')
-        console.log(`MongoDB Connected...`);
-    } catch (error) {
-        console.error(error)
-        return;
+const connectDb = async() => {
+    try{
+        await mongoose.connect(link)
+        console.log("Database is successfully connected.");
+    }
+    catch(err){
+        console.log(err);
+        return false
+        
     }
 }
-module.exports = databese;
+module.exports = connectDb;
