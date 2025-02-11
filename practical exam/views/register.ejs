@@ -4,215 +4,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Webpage</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+    <link rel="stylesheet" href="login biasa light.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
     <style>
-        body {
-            background-color: #EEF1F8;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: "poppins", sans-serif;
         }
 
-        a {
-            text-decoration: none;
-        }
 
-        .container {
-            width: 72%;
-            height: 70%;
-            background-color: #FFFFFF;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 2px 2px 30px rgba(66, 57, 238, .2);
-            border-radius: 20px;
+
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
-            background-image: url('https://i.postimg.cc/pdL2vfK9/bg.gif');
-            background-repeat: no-repeat;
+            min-height: 100vh;
+            background: #2c3338;
             background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
-        .sign-up {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .heading {
-            font-family: calibri;
-            color: rgba(30, 30, 30, 1);
-        }
-
-        .text {
-            width: 350px;
-            height: 50px;
-            box-shadow: 2px 6px 18px rgba(66, 57, 238, .3);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px;
-        }
-
-        .text input {
-            height: 40px;
-            width: 80%;
-            outline: none;
-            border: none;
-            font-size: 14px;
-            margin: 5px;
-        }
-
-        .text img {
-            margin-left: 20px;
-        }
-
-        .conditions {
-            font-family: myriad pro;
-            color: #BBC1CB;
-            font-size: 14px;
-        }
-
-        .conditions a {
-            color: #7D22E3;
-            font-weight: 500;
-        }
-
-        .terms {
-            display: flex;
-            align-items: center;
-        }
-
-        button {
-            width: 200px;
-            height: 40px;
-            outline: none;
-            border: none;
-            border-radius: 20px;
-            background: linear-gradient(-30deg, #3B02ED, #8E2AE0 55%);
-            box-shadow: 2px 6px 16px rgba(66, 57, 238, .3);
-            color: #FFFFFF;
-            font-weight: 600;
-            letter-spacing: 1px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all .3s ease;
-        }
-
-        button:active {
-            transform: scale(1.1);
-        }
-
-        .text-container {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .text-container p {
-            width: 70%;
+        .wrapper h1 {
+            font-size: 36px;
             text-align: center;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 13px;
-            font-weight: 400;
+            color: #A3A2A2;
         }
 
-        .text-container h1 {
-            font-family: Arial, Helvetica, sans-serif;
-            color: #2D2C2C;
-            line-height: 20px;
+        .wrapper .input-box {
+            color: #A3A2A2;
+            width: 100%;
+            height: 50px;
+            margin: 30px 0;
         }
 
-        @media screen and (max-width: 1080px) {
-            .text-container {
-                display: none;
-            }
-
-            .container {
-                height: 90%;
-            }
+        .input-box input {
+            width: 100%;
+            height: 100%;
+            background: #434A52;
+            border: none;
+            outline: none;
+            border: 2px solid rgba(78, 78, 78, 0.2);
+            border-radius: 10px;
+            font-size: 16px;
+            color: #000000;
+            padding: 20px 40px 20px 20px;
         }
 
-        @media screen and (max-width: 600px) {
-            .container {
-                width: 85%;
-            }
+        .input-box input::placeholder {
+            color: #A3A2A2;
         }
 
-        @media screen and (max-width: 500px) {
-            .text {
-                width: 300px;
-            }
+        .input-box i {
+            position: relative;
+            left: 90%;
+            bottom: 70%;
+            font-size: 20px;
         }
 
-        @media screen and (max-width: 420px) {
-            .container {
-                width: 95%;
-            }
+        .wrapper .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14.5px;
+            margin: -15px 0 15px;
+        }
 
-            .heading {
-                text-align: center;
-            }
+        .remember-forgot label input {
+            accent-color: #000000;
+            margin-left: 0px;
+        }
 
-            .conditions {
-                text-align: center;
-            }
+        .remember-forgot a {
+            color: #BCBABA;
+            text-decoration: none;
+            position: relative;
+            left: 90px;
+        }
 
-            input[type="checkbox"] {
-                margin-right: 5px;
-            }
+        .wrapper .btn {
+            width: 100%;
+            height: 45px;
+            background-color: #ea4c88;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+            cursor: pointer;
+            font-size: 16px;
+            color: #fff;
+            font-weight: 600;
+        }
 
-            .text {
-                width: 280px;
-            }
+        .wrapper .register-link {
+            font-size: 14.5px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-link p a {
+            color: #BCBABA;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link p a:hover {
+            text-decoration: underline;
+        }
+
+        
+
+        .register-link p {
+            color: #676767;
+        }
+
+        .wrapper .btn:hover {
+            color: #fff;
+            background-color: #3b4148;
+        }
+
+        html {
+            filter: invert(1) hue-rotate(180deg);
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="sign-up">
-            <h1 class="heading">Hello, friend!</h1>
 
-            <form action="/registeruser" method="post" align="center">
-                <div class="text">
-                    <img src="https://i.postimg.cc/1zgS8WTF/user.png" alt="icon" height="20">
-                    <input type="text" placeholder="Name" name="name">
+    
+
+        <div class="wrapper">
+            <form action="/registeruser" method="post">
+                <h1>register</h1>
+
+                <div class="input-box">
+                    <input type="text" name="name" id="name" placeholder="Username" required>
+                    <i class="bx bxs-user"></i>
                 </div>
 
-                <div class="text">
-                    <img src="https://i.postimg.cc/DZBPRgvC/email.png" alt="icon" height="12">
-                    <input type="email" placeholder="Email" name="email">
+                <div class="input-box">
+                    <input type="email" name="email" id="email" placeholder="Useremail" required>
+                    <i class='bx bxs-envelope'></i>
                 </div>
 
-                <div class="text">
-                    <img src="https://i.postimg.cc/Nj5SDK4q/password.png" alt="icon" height="20">
-                    <input type="password" placeholder="Password" name="password">
+                <div class="input-box">
+                    <input type="password" name="password" id="password" placeholder="password" required>
+                    <i class="bx bxs-lock-alt"></i>
                 </div>
 
-                <div class="terms">
-                    <input type="checkbox">
-                    <p class="conditions">I read and agree to <a href="#">terms & conditions</a></p>
-                </div>
+               
+                <button type="submit" class="btn" id="sbmt">Register</button>
 
-                <button type="submit">CREATE ACCOUNT</button>
+                <div class="register-link">
+                    <p>Don't have account? <a href="/">Sign up</a></p>
+                </div>
             </form>
-            <p class="conditions">Already have an account? <a href="/">Sign in</a></p>
-
         </div>
+    
 
-        <div class="text-container">
-            <h1>Glad to see you!</h1>
-            <p>Welcome, please fill in the blanks for sign up</p>
-        </div>
-    </div>
 </body>
 
 </html>
