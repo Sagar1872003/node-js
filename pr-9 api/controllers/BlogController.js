@@ -131,7 +131,7 @@ const userwiseDeleteBlog = async (req, res) => {
     } catch (err) {
         return res.status(501).send({
             success: false,
-            error: err
+            error: err 
         })
     }
 }
